@@ -27,7 +27,7 @@ function materialImplication(antecedent, consequent){
   };
 }
 
-function and(conjunct1, conjunct2){
+function conjunction(conjunct1, conjunct2){
   return{
     wff1: obj, 
     wff2: pred,
@@ -36,7 +36,7 @@ function and(conjunct1, conjunct2){
   }
 }
 
-function or(disjunct1, disjunct2){
+function disjunction(disjunct1, disjunct2){
   return{
     wff1: obj, 
     wff2: pred,
@@ -61,6 +61,12 @@ function checkValidity(wff){
     // add to validity table
   }
   //return validity table
+}
+
+module.exports = {
+  LOGIC,
+  wffSentinel, 
+  createAtom, materialImplication, conjunction, disjunction, negation, checkValidity
 }
 
 
