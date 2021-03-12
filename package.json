@@ -1,0 +1,22 @@
+{
+  "name": "hitchens-ghost",
+  "version": "1.0.0",
+  "description": "logically valid argument generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NathOrmond/hitchens-ghost.git"
+  },
+  "author": "nathan ormond",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NathOrmond/hitchens-ghost/issues"
+  },
+  "homepage": "https://github.com/NathOrmond/hitchens-ghost#readme",
+  "dependencies": {
+    "wikijs": "^6.0.1"
+  }
+}
