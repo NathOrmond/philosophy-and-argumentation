@@ -1,4 +1,4 @@
-const { getPageText } = require("./scrape.js");
+const { getPageText, getPageLinks } = require("./scrape.js");
 
 function ifSentence(ant, antV=true, cons, consV=true){ 
     return { 
@@ -56,40 +56,61 @@ function flattenUniq(arrays) {
 }
 
 async function run(){ 
-    text = await getPageText("atheism");
-
-    res = text.toLowerCase().split(" ");
-    predicates = [""];
-    for(i = 0; i < res.length; i++){ 
-        if((res[i] == "god") && (res[i+1] == "is")){ 
-            if(res[i+2]=="not"){ 
-                if(endingCheck(res[i+3])){ 
-                    predicates.push(((res[i + 2])+ " " +(res[i + 3])+ " " +(res[i + 4])));
-                } else { 
-                    predicates.push(((res[i + 2])+ " " +(res[i + 3])));
+    keySearchTerms = [
+        "christianity",
+        "god",
+        "atheism"
+    ];
+    searchTerm = "atheism";
+    
+    
+    runTimes = 0;
+    numArgs = 1;
+    while(runTimes < 10){
+        text = await getPageText(searchTerm);
+        res = text.toLowerCase().split(" ");
+        predicates = [""];
+        for(i = 0; i < res.length; i++){ 
+            if((res[i] == "god") && (res[i+1] == "is")){ 
+                if(res[i+2]=="not"){ 
+                    if(endingCheck(res[i+3])){ 
+                        predicates.push(((res[i + 2])+ " " +(res[i + 3])+ " " +(res[i + 4])));
+                    } else { 
+                        predicates.push(((res[i + 2])+ " " +(res[i + 3])));
+                    }
+                    
+                } else {
+                    predicates.push(res[i+2]);
                 }
-                
-            } else {
-                predicates.push(res[i+2]);
+            }
+        }
+        predicates.shift();
+
+        let ifSent = "";
+        let desired = "God exists";
+        let minor = "";
+        for(j = 0; j < predicates.length; j++){ 
+            ifSent = ifSentence(("God is " + predicates[j]), true, desired, true);
+            minor = genMinorPremise(ifSent, desired);
+            //TODO mix up logical validity with psuedorandom generator!
+            console.log(numArgs);
+            console.log(ifToString(ifSent));
+            console.log(minor);
+            console.log(desired);
+            numArgs++;
+        }
+
+        runTimes++;
+
+        links = await getPageLinks(searchTerm);
+        for(const link of links){
+            for(term of keySearchTerms){ 
+                if(link.includes(term)){ 
+                    searchTerm = link;
+                }
             }
         }
     }
-    predicates.shift();
-
-    let ifSent = "";
-    let desired = "God exists";
-    let minor = "";
-    for(j = 0; j < predicates.length; j++){ 
-        ifSent = ifSentence(("God is " + predicates[j]), true, desired, true);
-        minor = genMinorPremise(ifSent, desired);
-        //TODO mix up logical validity with psuedorandom generator!
-        console.log(j);
-        console.log(ifToString(ifSent));
-        console.log(minor);
-        console.log(desired);
-    }
-
-
 }
 
 function endingCheck(str){ 

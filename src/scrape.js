@@ -17,6 +17,22 @@ async function getPageText(pageName){
   return rv;
 }
 
+async function getPageLinks(pageName){ 
+  let page = await wiki().page(pageName);
+  let pageContents = await page.content();
+  let rv = [""];
+  for(const pageContent of pageContents){
+    if(pageContent.items !== undefined){
+      for(const item of pageContent.items){ 
+        rv.push(item.title);
+      }
+    }
+  }
+  rv.shift();
+  return rv;
+}
+
 module.exports = {
-  getPageText
+  getPageText,
+  getPageLinks
 }
