@@ -56,68 +56,149 @@ function flattenUniq(arrays) {
 }
 
 async function run(){ 
-    keySearchTerms = [
-        "christianity",
-        "god",
-        "atheism"
+    const keySearchTerms = [
+        "Christianity",
+        "God",
+        "Atheism",
+        "Philosophy of Religion",
+        "Islam",
+        "Hinduism",
+        "Buddhism", 
+        "Theology",
+        "Theism",
+        "Deism",
+        "Pantheism", 
+        "Jesus", 
+        "Messiah", 
+        "Martin Luther", 
+        "Pope", 
+        "Protestantism", 
+        "Catholicism",
+        "Jehovas Witnesses", 
+        "Anselm", 
+        "Thomism", 
+        "Augustine"
     ];
-    searchTerm = "atheism";
-    
-    
-    runTimes = 0;
-    numArgs = 1;
-    while(runTimes < 10){
-        text = await getPageText(searchTerm);
+    let runTimes = 0;
+    let numArgs = 0;
+    while(runTimes <= keySearchTerms.length){
+        
+       numArgs = await createArgumentsFrromWikiPage(keySearchTerms[runTimes], numArgs);
+       runTimes += 1;
+    }
+}
+
+async function createArgumentsFrromWikiPage(searchTerm, numArgs){
+    text = await getPageText(searchTerm);
+    if(text !== -1){ /**i.e. page hasnt caught an error! */
         res = text.toLowerCase().split(" ");
         predicates = [""];
         for(i = 0; i < res.length; i++){ 
             if((res[i] == "god") && (res[i+1] == "is")){ 
-                if(res[i+2]=="not"){ 
-                    if(endingCheck(res[i+3])){ 
-                        predicates.push(((res[i + 2])+ " " +(res[i + 3])+ " " +(res[i + 4])));
-                    } else { 
-                        predicates.push(((res[i + 2])+ " " +(res[i + 3])));
-                    }
-                    
-                } else {
-                    predicates.push(res[i+2]);
+                delta = 2;
+
+                while(!isEndPoint(res[i+delta])){
+                    delta += 1;
                 }
+
+                predicate = ""; 
+                for(k=0; k<=delta ; k++){ 
+                    predicate += res[i + k] + " ";
+                }
+                predicates.push(predicate);
             }
         }
         predicates.shift();
-
         let ifSent = "";
-        let desired = "God exists";
+        let desired = "not God exists";
         let minor = "";
         for(j = 0; j < predicates.length; j++){ 
-            ifSent = ifSentence(("God is " + predicates[j]), true, desired, true);
+            rand = Math.floor((Math.random() * 100) + 1);
+
+            if((rand%2) === 0){ 
+                ifSent = ifSentence((predicates[j]), true, desired, true);
+            }else{
+                ifSent = ifSentence(desired , true, ( predicates[j]), true);
+            }
             minor = genMinorPremise(ifSent, desired);
-            //TODO mix up logical validity with psuedorandom generator!
-            console.log(numArgs);
+            console.log("Argument - [%d]", (numArgs+1));
+            numArgs +=1;
+            console.log("====================");
             console.log(ifToString(ifSent));
             console.log(minor);
             console.log(desired);
-            numArgs++;
+            console.log("====================");
         }
-
-        runTimes++;
-
-        links = await getPageLinks(searchTerm);
-        for(const link of links){
-            for(term of keySearchTerms){ 
-                if(link.includes(term)){ 
-                    searchTerm = link;
-                }
-            }
-        }
+        return numArgs;
     }
 }
 
-function endingCheck(str){ 
-   return( 
-       str.includes("lly")
-    || str.includes("truth-it")
-   );
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function isEndPoint(str){ 
+    let rv = true;
+    let falseEndings = [
+        "not",
+        "lly",
+        "-it",
+        "not",
+        "the", 
+        "not",
+        "quite",
+        "also", 
+        "both",
+        "simultaneously", 
+        "directly",
+        "if", 
+        "utterly", 
+        "from",
+        "source",
+        "empirical",
+        "beyond",
+        "seen",
+        "like", 
+        "often",
+        "used", 
+        "most",
+        "infinitely", 
+        "truth", 
+        "human", 
+        "compatible"
+    ];
+
+    let exactMatches = [
+        "on", 
+        "his",
+        "so", 
+        "an", 
+        "of",
+        "this",
+        "or",
+        "in",
+        "a",
+        "one",
+        "as", 
+        "to"
+    ];
+    falseEndings.forEach((ending)=>{
+        if(str.includes(ending)){
+            // return false;
+            rv = false;
+        }
+    });
+
+    exactMatches.forEach((ending)=>{
+        if(str === ending){
+            // return false;
+            rv = false;
+        }
+    }); 
+
+    return rv;
 }
 
 run();
