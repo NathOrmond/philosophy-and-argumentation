@@ -1,4 +1,8 @@
-const { getPageText, getPageLinks } = require("./scrape.js");
+/**
+ * This is just a hacky solution to get the rough idea
+ * out of my head
+ */
+const { getPageText, getPageLinks } = require("./webscraping/scrape.js");
 
 function ifSentence(ant, antV=true, cons, consV=true){ 
     return { 
