@@ -2,7 +2,7 @@
  * This is just a hacky solution to get the rough idea
  * out of my head
  */
-const { getPageText, getPageLinks } = require("./webscraping/scrape.js");
+const { getPageText, getPageLinks } = require("./webscraping/wikiscrape.js");
 
 function ifSentence(ant, antV=true, cons, consV=true){ 
     return { 

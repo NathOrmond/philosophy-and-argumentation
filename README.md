@@ -14,10 +14,13 @@ conclusion... hence showing that whatever worldview the machine was
 employed toweard supporting was more true-er
 
 ## Installation Instructions: 
+- prerequisites: 
+    Git, NPM, Node.js
+
 - clone project using git 
 
 ```console
-    git clone {URL}
+    git clone https://github.com/NathOrmond/hitchens-ghost.git
 ``` 
 - install dependencies
 
