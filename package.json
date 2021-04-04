@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/NathOrmond/hitchens-ghost#readme",
   "dependencies": {
+    "eslint": "^7.23.0",
+    "lint": "^0.7.0",
     "wikijs": "^6.0.1"
   }
 }

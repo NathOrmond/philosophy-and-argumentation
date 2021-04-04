@@ -14,7 +14,7 @@ function or(wff1, wff2){
   return (wff1.value() || wff2.value());
 }
 
-function atom(name="Undefined Logical Atom"){ 
+function atom(name="Logical Atom"){ 
   return { 
     _name: name,
     isReducible: function(){ 
@@ -33,12 +33,12 @@ function atom(name="Undefined Logical Atom"){
       return this._consistent;
     },
     to_s: function(){ 
-      return "TODO"
+      console.log(this);
     }
   }
 }
 
-function molecule(name="undefined Logical Molecule"){
+function molecule(name="Logical Molecule"){
   return { 
     _name: name,
     _variables: [],
@@ -48,43 +48,46 @@ function molecule(name="undefined Logical Molecule"){
       this._variables.push(variable);      
     },
     isReducible: function(){
-      return (this._variables.length > 0);
+      return true;
     },
     _negate: false,
     negate : function(){ 
       this._negate = (!this._negate);
     },
     _value: undefined,
-    value: function(){ 
-      if(this._value === undefined){ 
-        if(this.isReducible()){ 
-          for(item = 0; item < this._variables.length; item++){
-             
-            console.log(this._variables[item]._name);
-          }
-        } else { 
-          this._value = true;
-        }
-      } 
-      return this._negate ? (!this._value) : (this._value);  
-    }, 
-    isConsistent(){ 
+    value: moleculeValue, 
+    _consistent: undefined,
+    isConsistent: function(){ 
+      if(this._consistnet === undefined){ 
 
+      }
     },
     to_s: function(){ 
-      return "TODO"
+      console.log(this);
     }
   }
+}
+
+function moleculeValue(molecule){ 
+  if(molecule._value === undefined){ 
+    if(molecule.isReducible()){ 
+      for(item = 0; item < molecule._variables.length; item++){
+        console.log(molecule._variables[item]._name);
+      }
+    } else { 
+      molecule._value = true;
+    }
+  } else { 
+    
+  } 
+  return molecule._negate ? (!molecule._value) : (molecule._value);  
 }
 
 testAtomP = atom("P");
 testAtomQ = atom("Q");
 testAtomQ.negate();
-console.log(testAtomP);
-console.log(testAtomQ);
-console.log(implication(testAtomP, testAtomQ));
-
-
+testAtomP.to_s();
+testAtomQ.to_s();
 
 module.exports = {
   molecule,

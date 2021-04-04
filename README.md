@@ -20,7 +20,7 @@ employed toweard supporting was more true-er
 - clone project using git 
 
 ```console
-    git clone https://github.com/NathOrmond/hitchens-ghost.git
+git clone https://github.com/NathOrmond/hitchens-ghost.git
 ``` 
 - install dependencies
 
