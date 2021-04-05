@@ -83,12 +83,6 @@ function moleculeValue(molecule){
   return molecule._negate ? (!molecule._value) : (molecule._value);  
 }
 
-testAtomP = atom("P");
-testAtomQ = atom("Q");
-testAtomQ.negate();
-testAtomP.to_s();
-testAtomQ.to_s();
-
 module.exports = {
   molecule,
   atom, 

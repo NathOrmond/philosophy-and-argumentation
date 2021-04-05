@@ -14,7 +14,7 @@ async function getNumRuns(){
     let response = await prompts({
         type: 'number',
         name: 'value',
-        message: 'How old are you?',
+        message: 'How many arguments do you want to generate?',
         validate: value => value > 0  ? true : "must be greater than zero"
       });
     return response;
