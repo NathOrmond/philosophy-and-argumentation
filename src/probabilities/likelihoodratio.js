@@ -3,3 +3,6 @@ function calculateLR_Dodgy(lrWeight=5, prior=0.5){
     return  prior * lrWeight/((1- prior) + (prior * lrWeight))
 }
 
+module.exports = {
+    calculateLR_Dodgy
+};
