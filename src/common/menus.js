@@ -22,19 +22,6 @@ async function getNumRuns(){
     return response;
 }
 
-// async function getTopic(){ 
-//   let options = await getTopicOptions();
-//   let response = await prompts({
-//     type: 'select',
-//     name: 'value',
-//     message: 'Pick a color',
-//     choices: options,
-//     initial: 1
-//   });
-//   console.log(response);
-//   return response;
-// }
-
 async function getTopic(){ 
   let options = await getTopicOptions();
   let response = await prompts({
