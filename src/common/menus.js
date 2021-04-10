@@ -1,5 +1,6 @@
 const prompts = require("prompts");
 const fs = require('fs');
+// const config = require('./webscraping/keyterms.json');
 
 async function yesNo(msg){
     let response = await prompts({
@@ -21,33 +22,51 @@ async function getNumRuns(){
     return response;
 }
 
+// async function getTopic(){ 
+//   let options = await getTopicOptions();
+//   let response = await prompts({
+//     type: 'select',
+//     name: 'value',
+//     message: 'Pick a color',
+//     choices: options,
+//     initial: 1
+//   });
+//   console.log(response);
+//   return response;
+// }
+
 async function getTopic(){ 
+  let options = await getTopicOptions();
   let response = await prompts({
     type: 'select',
     name: 'value',
-    message: 'Pick a color',
-    choices: getTopicOptions ,
+    message: 'Pick a topic to argue for',
+    choices: options,
     initial: 1
   });
-return response;
+  return response;
 }
 
-function getTopicOptions(){ 
-  const jsonObj = JSON.parse(fs.readFileSync('../webscraping/keyterms.json', 'utf8'));
-  let returnArr = [''];
-  for (var key in jsonObj) {
-    if (jsonObj.hasOwnProperty(key)) {
-        console.log(key + " -> " + p[key]);
-        returnArr.push({
-          title: key , 
-          description: ('Topics to do with: ' + p[key]), 
-          value: p[key], 
-          disabled: false
-        })
+async function getTopicOptions(){ 
+  let returnArray = [''];
+  try {
+    const jsonString = await fs.readFileSync('./src/keyterms.json');
+    const topics = JSON.parse(jsonString);
+    for (var key in topics) {
+      if (topics.hasOwnProperty(key)) {
+          returnArray.push({
+            title: key , 
+            description: ('Topics to do with: ' + topics[key]), 
+            value: topics[key]
+          });
+      }
     }
+    returnArray.shift();
+  } catch(err) {
+    console.log(err);
+    returnArray = undefined;
   }
-  returnArr.shift();
-  return returnArr;
+  return returnArray;
 }
 
 module.exports = {
