@@ -22,6 +22,26 @@ async function getNumRuns(){
     return response;
 }
 
+async function getForAgainst(){ 
+  let response = await prompts({
+    type: 'select',
+    name: 'value',
+    message: 'Pick how you would like your arguments to be generated',
+    choices:[
+      {
+      title: 'Argue in favour of position', 
+      value: true 
+      },
+      {
+        title: 'Argue against position', 
+        value: false
+      }
+    ],
+    initial: 0
+  });
+  return response;
+}
+
 async function getTopic(){ 
   let options = await getTopicOptions();
   let response = await prompts({
@@ -29,7 +49,7 @@ async function getTopic(){
     name: 'value',
     message: 'Pick a topic to argue for',
     choices: options,
-    initial: 1
+    initial: 0
   });
   return response;
 }
@@ -59,5 +79,6 @@ async function getTopicOptions(){
 module.exports = {
     yesNo,
     getNumRuns,
-    getTopic
+    getTopic,
+    getForAgainst
 }
