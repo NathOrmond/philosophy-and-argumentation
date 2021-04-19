@@ -2,6 +2,7 @@ const { getPageText, getPageLinks } = require("./webscraping/wikiscrape.js");
 const { yesNo, getNumRuns, getTopic, getForAgainst } = require("./common/menus.js");
 const { smallStepSemanticMachine } = require("./smallstepsemantics/smallstepsemanticsmachine.js");
 const { calculateLR_Dodgy } = require("./probabilities/likelihoodratio.js");
+const { createPredicateSentences } = require('./languageproc/languageproc.js');
 
 async function main(){ 
     const LIMIT_RUNS = 1000;
@@ -22,11 +23,10 @@ async function primaryLoop(topic, forAgainst, numRuns, machine){
     for(index = 0; index < numRuns.value; index++){ 
         let elementIndex = await randomElementGenerator(topic.value);
         let pageText = await getPageText(topic.value[elementIndex]);
-        // process language into a set of propositions about a subject
+        let subjectPredicateSentences = createPredicateSentences(pageText, /** subject from topic json subjects **/);
         // create wffs based on grammatical relations
-        // reduce wffs in machine
-        machine();
-        // calculate probabilities
+        // reduce wffs in machine and calculate probabilities and print them and index++ 
+        // when out of wffs to reduce incrememt main loop        
     }
 }
 
