@@ -1,6 +1,5 @@
 const prompts = require("prompts");
-const fs = require('fs');
-// const config = require('./webscraping/keyterms.json');
+const { getJSONString } = require("./json/jsonreader.js");
 
 async function yesNo(msg){
     let response = await prompts({
@@ -57,14 +56,13 @@ async function getTopic(){
 async function getTopicOptions(){ 
   let returnArray = [''];
   try {
-    const jsonString = await fs.readFileSync('./src/keyterms.json');
-    const topics = JSON.parse(jsonString);
+    const topics = getJSONString('./src/json/topicterms.json');
     for (var key in topics) {
       if (topics.hasOwnProperty(key)) {
           returnArray.push({
             title: key , 
             description: ('Topics to do with: ' + topics[key]), 
-            value: topics[key]
+            value: key
           });
       }
     }
