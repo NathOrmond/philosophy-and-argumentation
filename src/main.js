@@ -3,51 +3,45 @@ const { yesNo, getNumRuns, getTopic, getForAgainst } = require("./common/menus.j
 const { smallStepSemanticMachine } = require("./smallstepsemantics/smallstepsemanticsmachine.js");
 const { calculateLR_Dodgy } = require("./probabilities/likelihoodratio.js");
 const { createPredicateSentences } = require("./languageproc/languageproc.js");
-const fs = require('fs');
+const { getJSONString } = require("./json/jsonreader.js");
 
-async function main(){ 
-    const RUNS_LIMITER = 1000;
+const RUNS_LIMITER = 1000;
+const ARG_SENTENCE_SUBJECTS_JSON = "./src/json/argumentsubjects.json"
+const ARG_TOPICS_JSON = "./src/json/topicterms.json";
+
+async function main(){  
     let topic = await getTopic();
-
-    // let forAgainst = await getForAgainst();
-    // let numRuns = await getNumRuns();
-    // let machine = smallStepSemanticMachine;
-    // let run = true;
-   
-   
-    // if(numRuns.value > RUNS_LIMITER){
-    //     let message = "Due to a large number of arguments computations may take a while to complete - would you like to proceed";
-    //     let rv = await yesNo(message);
-    //     run = rv.value;
-    // }
-    // run ? primaryLoop(topic, forAgainst, numRuns, machine) : console.log("Aborting run this time");
+    let forAgainst = await getForAgainst();
+    let numRuns = await getNumRuns();
+    let machine = smallStepSemanticMachine;
+    let run = true;
+    if(numRuns.value > RUNS_LIMITER){
+        let message = "Due to a large number of arguments computations may take a while to complete - would you like to proceed";
+        let rv = await yesNo(message);
+        run = rv.value;
+    }
+    run ? primaryLoop(topic, forAgainst, numRuns, machine) : console.log("Aborting run this time");
 }
 
 async function primaryLoop(topic, forAgainst, numRuns, machine){
     for(index = 0; index < numRuns.value; index++){ 
+        let randomTopic = await randomTopicGenerator(topic.value);
+        let pageText = await getPageText(randomTopic);
+        let sentenceSubjectsJSON = await getJSONString(ARG_SENTENCE_SUBJECTS_JSON);
+        sentenceSubjectsJSON = sentenceSubjectsJSON[topic.value];
+        let subjectPredicateSentences = await createPredicateSentences(pageText, sentenceSubjectsJSON, forAgainst.value);
 
-        // let elementIndex = await randomElementGenerator(topic.value);
-        // let pageText = await getPageText(topic.value[elementIndex]);
-        
-        // console.log(`Iteration: ${elementIndex} \nPage Text:\n${pageText}`)
-        // let subjectJSON = await getSubjectFromJSON();
-        // let subjectPredicateSentences = await createPredicateSentences(pageText, /** subject from topic json subjects **/, forAgainst);
-   
-      
         // create wffs based on grammatical relations
         // reduce wffs in machine and calculate probabilities and print them and index++ 
         // when out of wffs to reduce incrememt main loop        
     }
 }
 
-async function randomElementGenerator(array){ 
-    let fred = Math.floor((Math.random() * array.length));
-    return fred;
-}
-
-async function getSubjectFromJSON(){ 
-    const jsonString = await fs.readFileSync('./src/json/argumentsubjects.json');
-    return JSON.parse(jsonString);
+async function randomTopicGenerator(topic){ 
+    let json = await getJSONString(ARG_TOPICS_JSON);
+    let array = json[topic];
+    let randomElementIndex = Math.floor((Math.random() * array.length));
+    return array[randomElementIndex];
 }
 
 main();

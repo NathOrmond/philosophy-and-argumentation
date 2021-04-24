@@ -3,6 +3,7 @@ const wiki = require('wikijs').default;
 
 async function getPageText(pageName){
   let rv = "";
+  console.log("> Scraping the web for text... this may take a while!");
   try{
     let page = await wiki().page(pageName);
     let pageContents = await page.content();
@@ -15,6 +16,7 @@ async function getPageText(pageName){
         }
       }
     }
+    console.log(`> Got text from the internet ${rv.split(' ').length} words long!`);
     return rv;
   }catch(err){
     return -1;

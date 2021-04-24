@@ -1,5 +1,7 @@
 const prompts = require("prompts");
-const { getJSONString } = require("./json/jsonreader.js");
+const { getJSONString } = require("../json/jsonreader.js");
+
+const TOPICS_JSON = "./src/json/topicterms.json";
 
 async function yesNo(msg){
     let response = await prompts({
@@ -56,7 +58,7 @@ async function getTopic(){
 async function getTopicOptions(){ 
   let returnArray = [''];
   try {
-    const topics = getJSONString('./src/json/topicterms.json');
+    const topics = await getJSONString(TOPICS_JSON);
     for (var key in topics) {
       if (topics.hasOwnProperty(key)) {
           returnArray.push({
