@@ -5,11 +5,6 @@ async function getJSONString(filePath){
     return await JSON.parse(jsonString);
 }
 
-// async function getJSONString(){ 
-//     const jsonString = await fs.readFileSync('./src/json/topicterms.json');
-//     return await JSON.parse(jsonString);
-// }
-
 module.exports = {
     getJSONString
 }
