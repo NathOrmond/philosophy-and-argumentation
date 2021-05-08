@@ -24,17 +24,30 @@ async function main(){
 }
 
 async function primaryLoop(topic, forAgainst, numRuns, machine){
-    for(index = 0; index < numRuns.value; index++){ 
+    for(index = 0; index < numRuns.value; ){ 
         let randomTopic = await randomTopicGenerator(topic.value);
         let pageText = await getPageText(randomTopic);
         let sentenceSubjectsJSON = await getJSONString(ARG_SENTENCE_SUBJECTS_JSON);
         sentenceSubjectsJSON = sentenceSubjectsJSON[topic.value];
-        let subjectPredicateSentences = await createPredicateSentences(pageText, sentenceSubjectsJSON, forAgainst.value);
-
+        let subjectPredicateSentences = await createPredicateSentences(pageText, sentenceSubjectsJSON, forAgainst.value, numRuns.value);
+        
+        break;
+        
+        if(subjectPredicateSentences === undefined) {
+            continue;
+        } 
         // create wffs based on grammatical relations
-        // reduce wffs in machine and calculate probabilities and print them and index++ 
-        // when out of wffs to reduce incrememt main loop        
+        // if(wffs === undefined){ 
+        //     continue;
+        // } else { 
+        //     index += wffs.length
+        // }
     }
+
+    // print desired num of wffs and their probabilities
+        // reduce wffs in machine and calculate probabilities and print them and index++ 
+        // when out of wffs to reduce incrememt main loop
+
 }
 
 async function randomTopicGenerator(topic){ 
