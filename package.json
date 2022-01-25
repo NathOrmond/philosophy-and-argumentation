@@ -4,7 +4,7 @@
   "description": "logically valid argument generator",
   "main": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
     "lint": "^0.7.0",
     "prompts": "^2.4.1",
     "wikijs": "^6.0.1"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
   }
 }

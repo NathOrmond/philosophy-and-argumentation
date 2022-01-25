@@ -1,7 +1,7 @@
 const { getPageText, getPageLinks } = require("./webscraping/wikiscrape.js");
 const { yesNo, getNumRuns, getTopic, getForAgainst } = require("./common/menus.js");
 const { smallStepSemanticMachine } = require("./smallstepsemantics/smallstepsemanticsmachine.js");
-const { calculateLR_Dodgy } = require("./probabilities/likelihoodratio.js");
+const { calculateLR_Dodgy } = require("./probabilities/probgabilityutilities.js");
 const { createPredicateSentences } = require("./languageproc/languageproc.js");
 const { getJSONString } = require("./json/jsonreader.js");
 
